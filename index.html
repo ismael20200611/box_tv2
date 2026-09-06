@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Rudaw MCR Monitor</title>
+  <title>External MCR Grid Monitor</title>
   <style>
     :root {
       --bg-main: #07090e;
@@ -32,14 +32,52 @@
         radial-gradient(circle at 50% 100%, rgba(0, 229, 255, 0.05) 0%, transparent 50%);
       overflow: hidden;
       color: var(--text-main);
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header Bar */
+    .header-bar {
+      width: 100%;
+      padding: 12px 20px;
+      background: rgba(15, 18, 28, 0.9);
+      border-bottom: 1px solid var(--card-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      backdrop-filter: blur(10px);
+    }
+
+    .brand-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      color: var(--text-main);
+      text-transform: uppercase;
+    }
+
+    .live-dot {
+      width: 9px;
+      height: 9px;
+      background-color: var(--accent-red);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--accent-red);
+      animation: blink 1.5s infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
     }
 
     /* Main Fullscreen Website Grid Container */
     .website-container {
       width: 100%;
-      height: 100%;
+      flex: 1;
       padding: 16px;
-      display: flex;
       box-sizing: border-box;
       overflow-y: auto;
     }
@@ -55,7 +93,7 @@
       flex: 1;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 12px;
     }
 
     .grid-row {
@@ -64,23 +102,34 @@
       gap: 10px;
     }
 
-    /* RUDAW BROADCAST BOXES */
+    /* BROADCAST BOXES */
     .green-box {
       position: relative;
       background: var(--card-bg);
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-top: 3px solid var(--accent-cyan);
       border-radius: 8px;
-      height: 70px;
+      height: 76px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 6px;
+      padding: 18px 6px 6px 6px;
       text-align: center;
       backdrop-filter: blur(8px);
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .box-number {
+      position: absolute;
+      top: 4px;
+      right: 8px;
+      color: var(--accent-cyan);
+      font-size: 10px;
+      font-weight: 800;
+      opacity: 0.85;
+      letter-spacing: 0.5px;
     }
 
     .box-city {
@@ -128,10 +177,10 @@
 
     /* CONTROL PANEL & SELECTS */
     .input-panel {
-      width: 160px;
+      width: 170px;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 12px;
     }
 
     .input-wrapper {
@@ -142,7 +191,7 @@
       padding: 6px;
       border-radius: 8px;
       border: 1px solid rgba(255, 255, 255, 0.05);
-      height: 70px;
+      height: 76px;
     }
 
     .selects-group {
@@ -204,6 +253,14 @@
 </head>
 <body>
 
+  <!-- Top Header Bar -->
+  <div class="header-bar">
+    <div class="brand-title">
+      <span class="live-dot"></span>
+      <span>EXTERNAL MCR GRID MONITOR</span>
+    </div>
+  </div>
+
   <div class="website-container">
     <div class="content-split">
       <!-- 32 Boxes Grid Container -->
@@ -254,6 +311,7 @@
         box.className = 'green-box';
         box.id = `box-container-${id}`;
         box.innerHTML = `
+          <span class="box-number">EXTERNAL ${id}</span>
           <span class="box-city" id="box-city-${id}"></span>
           <span class="box-liveu" id="box-liveu-${id}"></span>
         `;
@@ -336,4 +394,3 @@
 
 </body>
 </html>
-
