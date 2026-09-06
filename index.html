@@ -24,13 +24,13 @@
     }
 
     html, body {
-      width: 100vw;
+      width: 100%;
       height: 100vh;
       background-color: var(--bg-main);
       background-image: 
         radial-gradient(circle at 50% 0%, rgba(255, 42, 85, 0.08) 0%, transparent 50%),
         radial-gradient(circle at 50% 100%, rgba(0, 229, 255, 0.05) 0%, transparent 50%);
-      overflow: hidden; /* ABSOLUTELY NO SCROLLBARS */
+      overflow: hidden;
       color: var(--text-main);
       display: flex;
       flex-direction: column;
@@ -39,13 +39,12 @@
     /* Header Bar */
     .header-bar {
       width: 100%;
-      height: 42px;
-      padding: 0 16px;
+      padding: 12px 20px;
       background: rgba(15, 18, 28, 0.9);
       border-bottom: 1px solid var(--card-border);
       display: flex;
+      justify-content: space-between;
       align-items: center;
-      flex-shrink: 0;
       backdrop-filter: blur(10px);
     }
 
@@ -53,7 +52,7 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      font-size: 13px;
+      font-size: 15px;
       font-weight: 800;
       letter-spacing: 1px;
       color: var(--text-main);
@@ -61,8 +60,8 @@
     }
 
     .live-dot {
-      width: 8px;
-      height: 8px;
+      width: 9px;
+      height: 9px;
       background-color: var(--accent-red);
       border-radius: 50%;
       box-shadow: 0 0 8px var(--accent-red);
@@ -74,31 +73,33 @@
       50% { opacity: 0.3; }
     }
 
-    /* Fullscreen No-Scroll Container */
+    /* Main Fullscreen Website Grid Container */
     .website-container {
       width: 100%;
       flex: 1;
-      padding: 8px;
+      padding: 16px;
       box-sizing: border-box;
-      display: flex;
-      overflow: hidden;
+      overflow-y: auto;
     }
 
     .content-split {
       display: flex;
-      gap: 10px;
+      gap: 16px;
       width: 100%;
-      height: 100%;
+      height: max-content;
     }
 
-    /* 32 BOXES MATRIX (8 ROWS x 4 COLS) */
     .grid-container {
       flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .grid-row {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      grid-template-rows: repeat(8, 1fr);
-      gap: 6px;
-      height: 100%;
+      gap: 10px;
     }
 
     /* BROADCAST BOXES */
@@ -106,26 +107,26 @@
       position: relative;
       background: var(--card-bg);
       border: 1px solid rgba(255, 255, 255, 0.08);
-      border-top: 2px solid var(--accent-cyan);
-      border-radius: 6px;
+      border-top: 3px solid var(--accent-cyan);
+      border-radius: 8px;
+      height: 76px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 12px 4px 2px 4px;
+      padding: 18px 6px 6px 6px;
       text-align: center;
       backdrop-filter: blur(8px);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-      transition: all 0.2s ease;
-      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .box-number {
       position: absolute;
-      top: 2px;
-      right: 6px;
+      top: 4px;
+      right: 8px;
       color: var(--accent-cyan);
-      font-size: 9px;
+      font-size: 10px;
       font-weight: 800;
       opacity: 0.85;
       letter-spacing: 0.5px;
@@ -133,20 +134,16 @@
 
     .box-city {
       color: var(--text-main);
-      font-size: 13px;
+      font-size: 15px;
       font-weight: 800;
-      line-height: 1.1;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      max-width: 95%;
+      line-height: 1.2;
     }
 
     .box-liveu {
       color: var(--accent-cyan);
-      font-size: 10px;
+      font-size: 12px;
       font-weight: 700;
-      margin-top: 1px;
+      margin-top: 3px;
       letter-spacing: 0.5px;
     }
 
@@ -155,17 +152,20 @@
       0% {
         background-color: rgba(255, 42, 85, 0.85);
         border-color: #ff2a55;
-        box-shadow: 0 0 15px rgba(255, 42, 85, 0.8);
+        box-shadow: 0 0 20px rgba(255, 42, 85, 0.8);
+        transform: scale(1.01);
       }
       50% {
         background-color: rgba(255, 42, 85, 0.25);
         border-color: #ff7591;
-        box-shadow: 0 0 4px rgba(255, 42, 85, 0.3);
+        box-shadow: 0 0 5px rgba(255, 42, 85, 0.3);
+        transform: scale(1);
       }
       100% {
         background-color: rgba(255, 42, 85, 0.85);
         border-color: #ff2a55;
-        box-shadow: 0 0 15px rgba(255, 42, 85, 0.8);
+        box-shadow: 0 0 20px rgba(255, 42, 85, 0.8);
+        transform: scale(1.01);
       }
     }
 
@@ -175,73 +175,78 @@
       border-top-color: #ffffff;
     }
 
-    /* CONTROLS MATRIX (32 ROW ITEMS) */
+    /* CONTROL PANEL & SELECTS */
     .input-panel {
-      width: 160px;
-      display: grid;
-      grid-template-rows: repeat(32, 1fr);
-      gap: 3px;
-      height: 100%;
+      width: 170px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
     }
 
     .input-wrapper {
       display: flex;
       align-items: center;
-      gap: 4px;
+      gap: 6px;
       background: rgba(18, 22, 33, 0.6);
-      padding: 1px 4px;
-      border-radius: 4px;
+      padding: 6px;
+      border-radius: 8px;
       border: 1px solid rgba(255, 255, 255, 0.05);
-      overflow: hidden;
+      height: 76px;
     }
 
     .selects-group {
       display: flex;
-      gap: 3px;
+      flex-direction: column;
+      gap: 4px;
       width: 100%;
-      height: 100%;
-      align-items: center;
-    }
-
-    .yellow-select, .cyan-select {
-      background: #0f131d;
-      padding: 0 2px;
-      font-size: 9px;
-      font-weight: 700;
-      border-radius: 3px;
-      outline: none;
-      width: 100%;
-      height: 90%;
-      text-align: center;
-      cursor: pointer;
-      appearance: none;
-      -webkit-appearance: none;
     }
 
     .yellow-select {
       border: 1px solid rgba(255, 204, 0, 0.4);
+      background: #0f131d;
       color: var(--accent-yellow);
+      padding: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      border-radius: 4px;
+      outline: none;
+      width: 100%;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.2s;
     }
 
     .cyan-select {
       border: 1px solid rgba(0, 229, 255, 0.4);
+      background: #0f131d;
       color: var(--accent-cyan);
+      padding: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      border-radius: 4px;
+      outline: none;
+      width: 100%;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
       display: none;
     }
 
     .yellow-select:focus {
       border-color: var(--accent-yellow);
+      box-shadow: 0 0 6px rgba(255, 204, 0, 0.4);
     }
 
     .cyan-select:focus {
       border-color: var(--accent-cyan);
+      box-shadow: 0 0 6px rgba(0, 229, 255, 0.4);
     }
 
     .input-idx {
       color: var(--accent-cyan);
-      font-size: 9px;
+      font-size: 11px;
       font-weight: 800;
-      min-width: 14px;
+      min-width: 18px;
       text-align: center;
     }
   </style>
@@ -258,10 +263,10 @@
 
   <div class="website-container">
     <div class="content-split">
-      <!-- 32 Boxes Dynamic Matrix -->
+      <!-- 32 Boxes Grid Container -->
       <div class="grid-container" id="grid-main"></div>
 
-      <!-- 32 Controls Dynamic Matrix -->
+      <!-- 32 Select Dropdowns Container -->
       <div class="input-panel" id="controls-main"></div>
     </div>
   </div>
@@ -270,13 +275,13 @@
     const TOTAL_CHANNELS = 32;
 
     const kurdistanCities = [
-      "-- شار --", "هەولێر", "سلێمانی", "دهۆک", "هەڵەبجە", "ڕانیە", 
+      "-- شار هەڵبژێرە --", "هەولێر", "سلێمانی", "دهۆک", "هەڵەبجە", "ڕانیە", 
       "قەڵادزێ", "کۆیە", "چەمچەماڵ", "کەرکووک", "زاخۆ", "ئاکرێ", "سۆران", 
       "کەلار", "کفری", "پێنجوێن", "دەربەندیخان", "شەقڵاوە", "شێخان", "ئامێدی", "بەردەڕەش"
     ];
 
     const liveUOptions = [
-      "-- LiveU --", "LiveU 1", "LiveU 2", "LiveU 3", "LiveU 4", "LiveU 5", "LiveU 6"
+      "-- LiveU هەڵبژێرە --", "LiveU 1", "LiveU 2", "LiveU 3", "LiveU 4", "LiveU 5", "LiveU 6"
     ];
 
     const alarmTimers = {};
@@ -293,88 +298,97 @@
       }, 5000);
     }
 
-    // Generate 32 Items into standard matrix layouts
-    for (let id = 1; id <= TOTAL_CHANNELS; id++) {
-      // 1. Render Box
-      const box = document.createElement('div');
-      box.className = 'green-box';
-      box.id = `box-container-${id}`;
-      box.innerHTML = `
-        <span class="box-number">EXTERNAL ${id}</span>
-        <span class="box-city" id="box-city-${id}"></span>
-        <span class="box-liveu" id="box-liveu-${id}"></span>
-      `;
-      gridMain.appendChild(box);
+    // Generate 32 Channels Dynamically (8 Rows of 4 Boxes)
+    for (let r = 0; r < TOTAL_CHANNELS / 4; r++) {
+      const row = document.createElement('div');
+      row.className = 'grid-row';
 
-      // 2. Render Control Row
-      const wrapper = document.createElement('div');
-      wrapper.className = 'input-wrapper';
+      for (let c = 1; c <= 4; c++) {
+        const id = (r * 4) + c;
 
-      const idxSpan = document.createElement('span');
-      idxSpan.className = 'input-idx';
-      idxSpan.textContent = id;
+        // Box
+        const box = document.createElement('div');
+        box.className = 'green-box';
+        box.id = `box-container-${id}`;
+        box.innerHTML = `
+          <span class="box-number">EXTERNAL ${id}</span>
+          <span class="box-city" id="box-city-${id}"></span>
+          <span class="box-liveu" id="box-liveu-${id}"></span>
+        `;
+        row.appendChild(box);
 
-      const selectsGroup = document.createElement('div');
-      selectsGroup.className = 'selects-group';
+        // Dropdown Group Wrapper
+        const wrapper = document.createElement('div');
+        wrapper.className = 'input-wrapper';
 
-      // City Select
-      const citySelect = document.createElement('select');
-      citySelect.className = 'yellow-select';
+        const idxSpan = document.createElement('span');
+        idxSpan.className = 'input-idx';
+        idxSpan.textContent = id;
 
-      kurdistanCities.forEach(city => {
-        const option = document.createElement('option');
-        option.value = city.startsWith('--') ? '' : city;
-        option.textContent = city;
-        citySelect.appendChild(option);
-      });
+        const selectsGroup = document.createElement('div');
+        selectsGroup.className = 'selects-group';
 
-      // LiveU Select
-      const liveuSelect = document.createElement('select');
-      liveuSelect.className = 'cyan-select';
+        // City Select
+        const citySelect = document.createElement('select');
+        citySelect.className = 'yellow-select';
 
-      liveUOptions.forEach(lu => {
-        const option = document.createElement('option');
-        option.value = lu.startsWith('--') ? '' : lu;
-        option.textContent = lu;
-        liveuSelect.appendChild(option);
-      });
+        kurdistanCities.forEach(city => {
+          const option = document.createElement('option');
+          option.value = city.startsWith('--') ? '' : city;
+          option.textContent = city;
+          citySelect.appendChild(option);
+        });
 
-      // Event: City Change
-      citySelect.addEventListener('change', (e) => {
-        const selectedCity = e.target.value;
-        const boxCity = document.getElementById(`box-city-${id}`);
-        const boxLiveu = document.getElementById(`box-liveu-${id}`);
-        const boxContainer = document.getElementById(`box-container-${id}`);
+        // LiveU Select
+        const liveuSelect = document.createElement('select');
+        liveuSelect.className = 'cyan-select';
 
-        if (selectedCity) {
-          boxCity.textContent = selectedCity;
-          liveuSelect.style.display = 'block';
-        } else {
-          boxCity.textContent = '';
-          boxLiveu.textContent = '';
-          liveuSelect.value = '';
-          liveuSelect.style.display = 'none';
-        }
+        liveUOptions.forEach(lu => {
+          const option = document.createElement('option');
+          option.value = lu.startsWith('--') ? '' : lu;
+          option.textContent = lu;
+          liveuSelect.appendChild(option);
+        });
 
-        triggerAlarm(boxContainer);
-      });
+        // Event: City Change
+        citySelect.addEventListener('change', (e) => {
+          const selectedCity = e.target.value;
+          const boxCity = document.getElementById(`box-city-${id}`);
+          const boxLiveu = document.getElementById(`box-liveu-${id}`);
+          const boxContainer = document.getElementById(`box-container-${id}`);
 
-      // Event: LiveU Change
-      liveuSelect.addEventListener('change', (e) => {
-        const selectedLiveU = e.target.value;
-        const boxLiveu = document.getElementById(`box-liveu-${id}`);
-        const boxContainer = document.getElementById(`box-container-${id}`);
+          if (selectedCity) {
+            boxCity.textContent = selectedCity;
+            liveuSelect.style.display = 'block';
+          } else {
+            boxCity.textContent = '';
+            boxLiveu.textContent = '';
+            liveuSelect.value = '';
+            liveuSelect.style.display = 'none';
+          }
 
-        boxLiveu.textContent = selectedLiveU;
-        triggerAlarm(boxContainer);
-      });
+          triggerAlarm(boxContainer);
+        });
 
-      selectsGroup.appendChild(citySelect);
-      selectsGroup.appendChild(liveuSelect);
+        // Event: LiveU Change
+        liveuSelect.addEventListener('change', (e) => {
+          const selectedLiveU = e.target.value;
+          const boxLiveu = document.getElementById(`box-liveu-${id}`);
+          const boxContainer = document.getElementById(`box-container-${id}`);
 
-      wrapper.appendChild(idxSpan);
-      wrapper.appendChild(selectsGroup);
-      controlsMain.appendChild(wrapper);
+          boxLiveu.textContent = selectedLiveU;
+          triggerAlarm(boxContainer);
+        });
+
+        selectsGroup.appendChild(citySelect);
+        selectsGroup.appendChild(liveuSelect);
+
+        wrapper.appendChild(idxSpan);
+        wrapper.appendChild(selectsGroup);
+        controlsMain.appendChild(wrapper);
+      }
+
+      gridMain.appendChild(row);
     }
   </script>
 
