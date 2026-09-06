@@ -2,10 +2,8 @@
 <html lang="ckb" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <title>Rudaw MCR - External Grid Monitor (32 Channels + LiveU)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rudaw MCR Monitor</title>
   <style>
     :root {
       --bg-main: #07090e;
@@ -23,116 +21,34 @@
       margin: 0;
       padding: 0;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      -webkit-tap-highlight-color: transparent;
     }
 
     html, body {
       width: 100%;
-      height: 100%;
-      height: 100dvh;
+      height: 100vh;
       background-color: var(--bg-main);
       background-image: 
         radial-gradient(circle at 50% 0%, rgba(255, 42, 85, 0.08) 0%, transparent 50%),
         radial-gradient(circle at 50% 100%, rgba(0, 229, 255, 0.05) 0%, transparent 50%);
       overflow: hidden;
-    }
-
-    body {
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      align-items: center;
       color: var(--text-main);
-      padding: env(safe-area-inset-top, 12px) env(safe-area-inset-right, 12px) env(safe-area-inset-bottom, 12px) env(safe-area-inset-left, 12px);
     }
 
-    /* Header Bar */
-    .header-bar {
-      width: 100%;
-      max-width: 960px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 10px;
-      padding: 8px 14px;
-      background: rgba(15, 18, 28, 0.85);
-      border: 1px solid var(--card-border);
-      border-radius: 10px;
-      backdrop-filter: blur(10px);
-    }
-
-    .brand-title {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 13px;
-      font-weight: 800;
-      letter-spacing: 0.5px;
-      color: var(--text-main);
-      text-transform: uppercase;
-    }
-
-    .live-dot {
-      width: 8px;
-      height: 8px;
-      background-color: var(--accent-red);
-      border-radius: 50%;
-      box-shadow: 0 0 8px var(--accent-red);
-      animation: blink 1.5s infinite;
-    }
-
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.3; }
-    }
-
-    .controls {
-      display: flex;
-      gap: 6px;
-    }
-
-    .btn {
-      background: #141926;
-      color: var(--accent-cyan);
-      border: 1px solid rgba(0, 229, 255, 0.3);
-      padding: 5px 12px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 11px;
-      font-weight: 700;
-      transition: all 0.2s ease;
-    }
-
-    .btn:active {
-      transform: scale(0.96);
-      background: rgba(0, 229, 255, 0.15);
-    }
-
-    /* Main Monitor Container */
-    .iphone-container {
-      position: relative;
-      background: rgba(10, 13, 20, 0.9);
-      border: 1px solid var(--card-border);
-      border-radius: 18px;
-      padding: 12px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
+    /* Main Fullscreen Website Grid Container */
+    .website-container {
       width: 100%;
       height: 100%;
-      max-width: 960px;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+      padding: 16px;
+      display: flex;
+      box-sizing: border-box;
       overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
-    }
-
-    .iphone-container.landscape {
-      max-width: 100%;
     }
 
     .content-split {
       display: flex;
-      gap: 12px;
+      gap: 16px;
+      width: 100%;
+      height: max-content;
     }
 
     .grid-container {
@@ -142,32 +58,10 @@
       gap: 10px;
     }
 
-    .grid-row-container {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .grid-headers {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 6px;
-      text-align: center;
-    }
-
-    .col-num {
-      color: var(--text-muted);
-      font-size: 10px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      white-space: nowrap;
-    }
-
     .grid-row {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 6px;
+      gap: 10px;
     }
 
     /* RUDAW BROADCAST BOXES */
@@ -175,42 +69,32 @@
       position: relative;
       background: var(--card-bg);
       border: 1px solid rgba(255, 255, 255, 0.08);
-      border-top: 2px solid var(--accent-cyan);
+      border-top: 3px solid var(--accent-cyan);
       border-radius: 8px;
-      height: 78px;
+      height: 70px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 14px 4px 4px 4px;
+      padding: 6px;
       text-align: center;
       backdrop-filter: blur(8px);
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    .box-number {
-      position: absolute;
-      top: 3px;
-      right: 6px;
-      color: var(--accent-cyan);
-      font-size: 9px;
-      font-weight: 800;
-      opacity: 0.8;
-    }
-
     .box-city {
       color: var(--text-main);
-      font-size: 13px;
+      font-size: 15px;
       font-weight: 800;
       line-height: 1.2;
     }
 
     .box-liveu {
       color: var(--accent-cyan);
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 700;
-      margin-top: 2px;
+      margin-top: 3px;
       letter-spacing: 0.5px;
     }
 
@@ -220,7 +104,7 @@
         background-color: rgba(255, 42, 85, 0.85);
         border-color: #ff2a55;
         box-shadow: 0 0 20px rgba(255, 42, 85, 0.8);
-        transform: scale(1.02);
+        transform: scale(1.01);
       }
       50% {
         background-color: rgba(255, 42, 85, 0.25);
@@ -232,7 +116,7 @@
         background-color: rgba(255, 42, 85, 0.85);
         border-color: #ff2a55;
         box-shadow: 0 0 20px rgba(255, 42, 85, 0.8);
-        transform: scale(1.02);
+        transform: scale(1.01);
       }
     }
 
@@ -244,27 +128,27 @@
 
     /* CONTROL PANEL & SELECTS */
     .input-panel {
-      width: 145px;
+      width: 160px;
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 10px;
     }
 
     .input-wrapper {
       display: flex;
       align-items: center;
-      gap: 4px;
+      gap: 6px;
       background: rgba(18, 22, 33, 0.6);
-      padding: 4px;
-      border-radius: 6px;
+      padding: 6px;
+      border-radius: 8px;
       border: 1px solid rgba(255, 255, 255, 0.05);
-      height: 78px;
+      height: 70px;
     }
 
     .selects-group {
       display: flex;
       flex-direction: column;
-      gap: 3px;
+      gap: 4px;
       width: 100%;
     }
 
@@ -272,8 +156,8 @@
       border: 1px solid rgba(255, 204, 0, 0.4);
       background: #0f131d;
       color: var(--accent-yellow);
-      padding: 3px 2px;
-      font-size: 10px;
+      padding: 4px;
+      font-size: 11px;
       font-weight: 700;
       border-radius: 4px;
       outline: none;
@@ -287,8 +171,8 @@
       border: 1px solid rgba(0, 229, 255, 0.4);
       background: #0f131d;
       color: var(--accent-cyan);
-      padding: 3px 2px;
-      font-size: 10px;
+      padding: 4px;
+      font-size: 11px;
       font-weight: 700;
       border-radius: 4px;
       outline: none;
@@ -296,7 +180,7 @@
       text-align: center;
       cursor: pointer;
       transition: all 0.2s;
-      display: none; /* hidden until city is selected */
+      display: none;
     }
 
     .yellow-select:focus {
@@ -311,30 +195,18 @@
 
     .input-idx {
       color: var(--accent-cyan);
-      font-size: 10px;
+      font-size: 11px;
       font-weight: 800;
-      min-width: 16px;
+      min-width: 18px;
       text-align: center;
     }
   </style>
 </head>
 <body>
 
-  <!-- Header & Controls -->
-  <div class="header-bar">
-    <div class="brand-title">
-      <span class="live-dot"></span>
-      <span>RUDAW MCR GRID (32 CH + LIVEU)</span>
-    </div>
-    <div class="controls">
-      <button class="btn" id="rotate-btn">Rotate</button>
-      <button class="btn" id="fullscreen-btn">Fullscreen</button>
-    </div>
-  </div>
-
-  <div class="iphone-container" id="iphone-screen">
+  <div class="website-container">
     <div class="content-split">
-      <!-- 32 Boxes Dynamic Container -->
+      <!-- 32 Boxes Grid Container -->
       <div class="grid-container" id="grid-main"></div>
 
       <!-- 32 Select Dropdowns Container -->
@@ -369,32 +241,19 @@
       }, 5000);
     }
 
-    // Generate 32 Channels Dynamically
+    // Generate 32 Channels Dynamically (8 Rows of 4 Boxes)
     for (let r = 0; r < TOTAL_CHANNELS / 4; r++) {
-      const rowContainer = document.createElement('div');
-      rowContainer.className = 'grid-row-container';
-
-      const headers = document.createElement('div');
-      headers.className = 'grid-headers';
-
       const row = document.createElement('div');
       row.className = 'grid-row';
 
       for (let c = 1; c <= 4; c++) {
         const id = (r * 4) + c;
 
-        // Header
-        const colNum = document.createElement('div');
-        colNum.className = 'col-num';
-        colNum.textContent = `External ${id}`;
-        headers.appendChild(colNum);
-
         // Box
         const box = document.createElement('div');
         box.className = 'green-box';
         box.id = `box-container-${id}`;
         box.innerHTML = `
-          <span class="box-number">EXT ${id}</span>
           <span class="box-city" id="box-city-${id}"></span>
           <span class="box-liveu" id="box-liveu-${id}"></span>
         `;
@@ -442,12 +301,12 @@
 
           if (selectedCity) {
             boxCity.textContent = selectedCity;
-            liveuSelect.style.display = 'block'; // Show LiveU dropdown
+            liveuSelect.style.display = 'block';
           } else {
             boxCity.textContent = '';
             boxLiveu.textContent = '';
             liveuSelect.value = '';
-            liveuSelect.style.display = 'none'; // Hide LiveU dropdown
+            liveuSelect.style.display = 'none';
           }
 
           triggerAlarm(boxContainer);
@@ -471,26 +330,10 @@
         controlsMain.appendChild(wrapper);
       }
 
-      rowContainer.appendChild(headers);
-      rowContainer.appendChild(row);
-      gridMain.appendChild(rowContainer);
+      gridMain.appendChild(row);
     }
-
-    // Screen Buttons
-    document.getElementById('rotate-btn').addEventListener('click', () => {
-      document.getElementById('iphone-screen').classList.toggle('landscape');
-    });
-
-    document.getElementById('fullscreen-btn').addEventListener('click', () => {
-      const docEl = document.documentElement;
-      if (docEl.requestFullscreen) {
-        if (!document.fullscreenElement) docEl.requestFullscreen();
-        else document.exitFullscreen();
-      } else if (docEl.webkitRequestFullscreen) {
-        docEl.webkitRequestFullscreen();
-      }
-    });
   </script>
 
 </body>
 </html>
+
