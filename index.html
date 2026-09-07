@@ -120,16 +120,18 @@
       will-change: background-color, border-color;
     }
 
-    .box-number {
-      position: absolute;
-      top: 10px;
-      right: 14px;
-      color: var(--accent-cyan);
-      font-size: 14px;
-      font-weight: 800;
-      opacity: 0.85;
-      letter-spacing: 0.8px;
-    }
+ .box-number {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--accent-cyan);
+  font-size: 14px;
+  font-weight: 800;
+  opacity: 0.85;
+  letter-spacing: 0.8px;
+  white-space: nowrap; /* Keeps text on a single line */
+}
 
     .box-city {
       color: var(--text-main);
