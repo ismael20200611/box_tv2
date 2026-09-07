@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>External MCR Grid Monitor</title>
+  <title>External MCR Grid Monitor By Nwezhyan</title>
   <style>
     :root {
       --bg-main: #07090e;
@@ -39,13 +39,14 @@
     /* Header Bar */
     .header-bar {
       width: 100%;
-      padding: 16px 24px;
+      padding: 14px 24px;
       background: rgba(15, 18, 28, 0.9);
       border-bottom: 1px solid var(--card-border);
       display: flex;
       justify-content: space-between;
       align-items: center;
       backdrop-filter: blur(10px);
+      flex-shrink: 0;
     }
 
     .brand-title {
@@ -73,49 +74,52 @@
       50% { opacity: 0.3; }
     }
 
-    /* Main Container */
+    /* Main Fullscreen Container */
     .website-container {
       width: 100%;
       flex: 1;
-      padding: 20px;
+      padding: 16px;
       box-sizing: border-box;
-      overflow-y: auto;
+      display: flex;
+      height: calc(100vh - 55px);
     }
 
     .content-split {
       display: flex;
-      gap: 20px;
+      gap: 16px;
       width: 100%;
       height: 100%;
     }
 
+    /* Grid Layout Auto-Stretches Vertically */
     .grid-container {
       flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
+      display: grid;
+      grid-template-rows: repeat(3, 1fr);
+      gap: 14px;
+      height: 100%;
     }
 
-    /* 2 Columns Layout */
     .grid-row {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
+      gap: 14px;
+      height: 100%;
     }
 
-    /* ENLARGED BROADCAST BOXES */
+    /* FULL HEIGHT BROADCAST BOXES */
     .green-box {
       position: relative;
       background: var(--card-bg);
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-top: 4px solid var(--accent-cyan);
       border-radius: 12px;
-      height: 120px;
+      height: 100%;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 20px 10px 10px 10px;
+      padding: 24px 12px 12px 12px;
       text-align: center;
       backdrop-filter: blur(8px);
       box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
@@ -124,10 +128,10 @@
 
     .box-number {
       position: absolute;
-      top: 8px;
-      right: 12px;
+      top: 10px;
+      right: 14px;
       color: var(--accent-cyan);
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 800;
       opacity: 0.85;
       letter-spacing: 0.8px;
@@ -135,16 +139,16 @@
 
     .box-city {
       color: var(--text-main);
-      font-size: 24px;
+      font-size: 28px;
       font-weight: 800;
       line-height: 1.2;
     }
 
     .box-liveu {
       color: var(--accent-cyan);
-      font-size: 18px;
+      font-size: 20px;
       font-weight: 700;
-      margin-top: 6px;
+      margin-top: 8px;
       letter-spacing: 0.5px;
     }
 
@@ -154,7 +158,7 @@
         background-color: rgba(255, 42, 85, 0.85);
         border-color: #ff2a55;
         box-shadow: 0 0 25px rgba(255, 42, 85, 0.9);
-        transform: scale(1.015);
+        transform: scale(1.01);
       }
       50% {
         background-color: rgba(255, 42, 85, 0.25);
@@ -166,7 +170,7 @@
         background-color: rgba(255, 42, 85, 0.85);
         border-color: #ff2a55;
         box-shadow: 0 0 25px rgba(255, 42, 85, 0.9);
-        transform: scale(1.015);
+        transform: scale(1.01);
       }
     }
 
@@ -176,12 +180,13 @@
       border-top-color: #ffffff;
     }
 
-    /* ENLARGED CONTROL PANEL & SELECTS */
+    /* CONTROL PANEL STRETCHED */
     .input-panel {
       width: 220px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
+      display: grid;
+      grid-template-rows: repeat(6, 1fr);
+      gap: 10px;
+      height: 100%;
     }
 
     .input-wrapper {
@@ -192,7 +197,7 @@
       padding: 10px;
       border-radius: 10px;
       border: 1px solid rgba(255, 255, 255, 0.05);
-      height: 120px;
+      height: 100%;
     }
 
     .selects-group {
@@ -263,7 +268,6 @@
 
   <script>
     const TOTAL_CHANNELS = 6;
-    const COLUMNS_PER_ROW = 2; // Updated to 2 columns
 
     const liveUOptions = [
       "-- سەرچاوە هەڵبژێرە --",
@@ -295,16 +299,19 @@
       }, 5000);
     }
 
-    // Generate 6 Channels (3 Rows x 2 Columns)
-    for (let r = 0; r < Math.ceil(TOTAL_CHANNELS / COLUMNS_PER_ROW); r++) {
+    // Explicit grid layout definition matching your layout request in RTL mode
+    const layoutMap = [
+      [2, 1], // Row 1: Ext 2 (Right), Ext 1 (Left)
+      [4, 3], // Row 2: Ext 4 (Right), Ext 3 (Left)
+      [6, 5]  // Row 3: Ext 6 (Right), Ext 5 (Left)
+    ];
+
+    // Build Grid Boxes according to layout matrix
+    layoutMap.forEach(rowIds => {
       const row = document.createElement('div');
       row.className = 'grid-row';
 
-      for (let c = 1; c <= COLUMNS_PER_ROW; c++) {
-        const id = (r * COLUMNS_PER_ROW) + c;
-        if (id > TOTAL_CHANNELS) break;
-
-        // Box
+      rowIds.forEach(id => {
         const box = document.createElement('div');
         box.className = 'green-box';
         box.id = `box-container-${id}`;
@@ -314,78 +321,75 @@
           <span class="box-liveu" id="box-liveu-${id}"></span>
         `;
         row.appendChild(box);
-
-        // Control Wrapper
-        const wrapper = document.createElement('div');
-        wrapper.className = 'input-wrapper';
-
-        const idxSpan = document.createElement('span');
-        idxSpan.className = 'input-idx';
-        idxSpan.textContent = id;
-
-        const selectsGroup = document.createElement('div');
-        selectsGroup.className = 'selects-group';
-
-        // 1. Live Source Select
-        const liveuSelect = document.createElement('select');
-        liveuSelect.className = 'cyan-select';
-
-        liveUOptions.forEach(lu => {
-          const option = document.createElement('option');
-          option.value = lu.startsWith('--') ? '' : lu;
-          option.textContent = lu;
-          liveuSelect.appendChild(option);
-        });
-
-        // 2. City Select
-        const citySelect = document.createElement('select');
-        citySelect.className = 'yellow-select';
-
-        kurdistanCities.forEach(city => {
-          const option = document.createElement('option');
-          option.value = city.startsWith('--') ? '' : city;
-          option.textContent = city;
-          citySelect.appendChild(option);
-        });
-
-        // Event Listeners
-        liveuSelect.addEventListener('change', (e) => {
-          const selectedLiveU = e.target.value;
-          const boxLiveu = document.getElementById(`box-liveu-${id}`);
-          const boxCity = document.getElementById(`box-city-${id}`);
-          const boxContainer = document.getElementById(`box-container-${id}`);
-
-          if (selectedLiveU) {
-            boxLiveu.textContent = selectedLiveU;
-            citySelect.style.display = 'block';
-          } else {
-            boxLiveu.textContent = '';
-            boxCity.textContent = '';
-            citySelect.value = '';
-            citySelect.style.display = 'none';
-          }
-
-          triggerAlarm(boxContainer);
-        });
-
-        citySelect.addEventListener('change', (e) => {
-          const selectedCity = e.target.value;
-          const boxCity = document.getElementById(`box-city-${id}`);
-          const boxContainer = document.getElementById(`box-container-${id}`);
-
-          boxCity.textContent = selectedCity;
-          triggerAlarm(boxContainer);
-        });
-
-        selectsGroup.appendChild(liveuSelect);
-        selectsGroup.appendChild(citySelect);
-
-        wrapper.appendChild(idxSpan);
-        wrapper.appendChild(selectsGroup);
-        controlsMain.appendChild(wrapper);
-      }
+      });
 
       gridMain.appendChild(row);
+    });
+
+    // Build Control Panel Items (1 to 6)
+    for (let id = 1; id <= TOTAL_CHANNELS; id++) {
+      const wrapper = document.createElement('div');
+      wrapper.className = 'input-wrapper';
+
+      const idxSpan = document.createElement('span');
+      idxSpan.className = 'input-idx';
+      idxSpan.textContent = id;
+
+      const selectsGroup = document.createElement('div');
+      selectsGroup.className = 'selects-group';
+
+      const liveuSelect = document.createElement('select');
+      liveuSelect.className = 'cyan-select';
+      liveUOptions.forEach(lu => {
+        const option = document.createElement('option');
+        option.value = lu.startsWith('--') ? '' : lu;
+        option.textContent = lu;
+        liveuSelect.appendChild(option);
+      });
+
+      const citySelect = document.createElement('select');
+      citySelect.className = 'yellow-select';
+      kurdistanCities.forEach(city => {
+        const option = document.createElement('option');
+        option.value = city.startsWith('--') ? '' : city;
+        option.textContent = city;
+        citySelect.appendChild(option);
+      });
+
+      liveuSelect.addEventListener('change', (e) => {
+        const selectedLiveU = e.target.value;
+        const boxLiveu = document.getElementById(`box-liveu-${id}`);
+        const boxCity = document.getElementById(`box-city-${id}`);
+        const boxContainer = document.getElementById(`box-container-${id}`);
+
+        if (selectedLiveU) {
+          boxLiveu.textContent = selectedLiveU;
+          citySelect.style.display = 'block';
+        } else {
+          boxLiveu.textContent = '';
+          boxCity.textContent = '';
+          citySelect.value = '';
+          citySelect.style.display = 'none';
+        }
+
+        triggerAlarm(boxContainer);
+      });
+
+      citySelect.addEventListener('change', (e) => {
+        const selectedCity = e.target.value;
+        const boxCity = document.getElementById(`box-city-${id}`);
+        const boxContainer = document.getElementById(`box-container-${id}`);
+
+        boxCity.textContent = selectedCity;
+        triggerAlarm(boxContainer);
+      });
+
+      selectsGroup.appendChild(liveuSelect);
+      selectsGroup.appendChild(citySelect);
+
+      wrapper.appendChild(idxSpan);
+      wrapper.appendChild(selectsGroup);
+      controlsMain.appendChild(wrapper);
     }
   </script>
 
