@@ -39,7 +39,7 @@
     /* Header Bar */
     .header-bar {
       width: 100%;
-      padding: 12px 20px;
+      padding: 16px 24px;
       background: rgba(15, 18, 28, 0.9);
       border-bottom: 1px solid var(--card-border);
       display: flex;
@@ -51,20 +51,20 @@
     .brand-title {
       display: flex;
       align-items: center;
-      gap: 10px;
-      font-size: 15px;
+      gap: 12px;
+      font-size: 18px;
       font-weight: 800;
-      letter-spacing: 1px;
+      letter-spacing: 1.5px;
       color: var(--text-main);
       text-transform: uppercase;
     }
 
     .live-dot {
-      width: 9px;
-      height: 9px;
+      width: 12px;
+      height: 12px;
       background-color: var(--accent-red);
       border-radius: 50%;
-      box-shadow: 0 0 8px var(--accent-red);
+      box-shadow: 0 0 10px var(--accent-red);
       animation: blink 1.5s infinite;
     }
 
@@ -73,77 +73,78 @@
       50% { opacity: 0.3; }
     }
 
-    /* Main Fullscreen Website Grid Container */
+    /* Main Container */
     .website-container {
       width: 100%;
       flex: 1;
-      padding: 16px;
+      padding: 20px;
       box-sizing: border-box;
       overflow-y: auto;
     }
 
     .content-split {
       display: flex;
-      gap: 16px;
+      gap: 20px;
       width: 100%;
-      height: max-content;
+      height: 100%;
     }
 
     .grid-container {
       flex: 1;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 16px;
     }
 
+    /* 2 Columns Layout */
     .grid-row {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
     }
 
-    /* BROADCAST BOXES */
+    /* ENLARGED BROADCAST BOXES */
     .green-box {
       position: relative;
       background: var(--card-bg);
       border: 1px solid rgba(255, 255, 255, 0.08);
-      border-top: 3px solid var(--accent-cyan);
-      border-radius: 8px;
-      height: 76px;
+      border-top: 4px solid var(--accent-cyan);
+      border-radius: 12px;
+      height: 120px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 18px 6px 6px 6px;
+      padding: 20px 10px 10px 10px;
       text-align: center;
       backdrop-filter: blur(8px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .box-number {
       position: absolute;
-      top: 4px;
-      right: 8px;
+      top: 8px;
+      right: 12px;
       color: var(--accent-cyan);
-      font-size: 10px;
+      font-size: 13px;
       font-weight: 800;
       opacity: 0.85;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.8px;
     }
 
     .box-city {
       color: var(--text-main);
-      font-size: 15px;
+      font-size: 24px;
       font-weight: 800;
       line-height: 1.2;
     }
 
     .box-liveu {
       color: var(--accent-cyan);
-      font-size: 12px;
+      font-size: 18px;
       font-weight: 700;
-      margin-top: 3px;
+      margin-top: 6px;
       letter-spacing: 0.5px;
     }
 
@@ -152,20 +153,20 @@
       0% {
         background-color: rgba(255, 42, 85, 0.85);
         border-color: #ff2a55;
-        box-shadow: 0 0 20px rgba(255, 42, 85, 0.8);
-        transform: scale(1.01);
+        box-shadow: 0 0 25px rgba(255, 42, 85, 0.9);
+        transform: scale(1.015);
       }
       50% {
         background-color: rgba(255, 42, 85, 0.25);
         border-color: #ff7591;
-        box-shadow: 0 0 5px rgba(255, 42, 85, 0.3);
+        box-shadow: 0 0 8px rgba(255, 42, 85, 0.3);
         transform: scale(1);
       }
       100% {
         background-color: rgba(255, 42, 85, 0.85);
         border-color: #ff2a55;
-        box-shadow: 0 0 20px rgba(255, 42, 85, 0.8);
-        transform: scale(1.01);
+        box-shadow: 0 0 25px rgba(255, 42, 85, 0.9);
+        transform: scale(1.015);
       }
     }
 
@@ -175,78 +176,71 @@
       border-top-color: #ffffff;
     }
 
-    /* CONTROL PANEL & SELECTS */
+    /* ENLARGED CONTROL PANEL & SELECTS */
     .input-panel {
-      width: 170px;
+      width: 220px;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 16px;
     }
 
     .input-wrapper {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 10px;
       background: rgba(18, 22, 33, 0.6);
-      padding: 6px;
-      border-radius: 8px;
+      padding: 10px;
+      border-radius: 10px;
       border: 1px solid rgba(255, 255, 255, 0.05);
-      height: 76px;
+      height: 120px;
     }
 
     .selects-group {
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 8px;
       width: 100%;
+    }
+
+    .cyan-select, .yellow-select {
+      background: #0f131d;
+      padding: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      border-radius: 6px;
+      outline: none;
+      width: 100%;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
     }
 
     .cyan-select {
       border: 1px solid rgba(0, 229, 255, 0.4);
-      background: #0f131d;
       color: var(--accent-cyan);
-      padding: 4px;
-      font-size: 11px;
-      font-weight: 700;
-      border-radius: 4px;
-      outline: none;
-      width: 100%;
-      text-align: center;
-      cursor: pointer;
-      transition: all 0.2s;
     }
 
     .yellow-select {
       border: 1px solid rgba(255, 204, 0, 0.4);
-      background: #0f131d;
       color: var(--accent-yellow);
-      padding: 4px;
-      font-size: 11px;
-      font-weight: 700;
-      border-radius: 4px;
-      outline: none;
-      width: 100%;
-      text-align: center;
-      cursor: pointer;
-      transition: all 0.2s;
       display: none;
     }
 
     .cyan-select:focus {
       border-color: var(--accent-cyan);
-      box-shadow: 0 0 6px rgba(0, 229, 255, 0.4);
+      box-shadow: 0 0 8px rgba(0, 229, 255, 0.4);
     }
 
     .yellow-select:focus {
       border-color: var(--accent-yellow);
-      box-shadow: 0 0 6px rgba(255, 204, 0, 0.4);
+      box-shadow: 0 0 8px rgba(255, 204, 0, 0.4);
     }
 
     .input-idx {
       color: var(--accent-cyan);
-      font-size: 11px;
+      font-size: 16px;
       font-weight: 800;
-      min-width: 18px;
+      min-width: 24px;
       text-align: center;
     }
   </style>
@@ -263,14 +257,13 @@
   <div class="website-container">
     <div class="content-split">
       <div class="grid-container" id="grid-main"></div>
-
       <div class="input-panel" id="controls-main"></div>
     </div>
   </div>
 
   <script>
     const TOTAL_CHANNELS = 6;
-    const COLUMNS_PER_ROW = 3;
+    const COLUMNS_PER_ROW = 2; // Updated to 2 columns
 
     const liveUOptions = [
       "-- سەرچاوە هەڵبژێرە --",
@@ -302,7 +295,7 @@
       }, 5000);
     }
 
-    // Generate 6 Channels Dynamically (2 Rows of 3 Boxes)
+    // Generate 6 Channels (3 Rows x 2 Columns)
     for (let r = 0; r < Math.ceil(TOTAL_CHANNELS / COLUMNS_PER_ROW); r++) {
       const row = document.createElement('div');
       row.className = 'grid-row';
@@ -322,7 +315,7 @@
         `;
         row.appendChild(box);
 
-        // Dropdown Group Wrapper
+        // Control Wrapper
         const wrapper = document.createElement('div');
         wrapper.className = 'input-wrapper';
 
@@ -333,7 +326,7 @@
         const selectsGroup = document.createElement('div');
         selectsGroup.className = 'selects-group';
 
-        // 1. Live Source Select (Shown First)
+        // 1. Live Source Select
         const liveuSelect = document.createElement('select');
         liveuSelect.className = 'cyan-select';
 
@@ -344,7 +337,7 @@
           liveuSelect.appendChild(option);
         });
 
-        // 2. City Select (Hidden initially)
+        // 2. City Select
         const citySelect = document.createElement('select');
         citySelect.className = 'yellow-select';
 
@@ -355,7 +348,7 @@
           citySelect.appendChild(option);
         });
 
-        // Event: Live Source Change
+        // Event Listeners
         liveuSelect.addEventListener('change', (e) => {
           const selectedLiveU = e.target.value;
           const boxLiveu = document.getElementById(`box-liveu-${id}`);
@@ -375,7 +368,6 @@
           triggerAlarm(boxContainer);
         });
 
-        // Event: City Change
         citySelect.addEventListener('change', (e) => {
           const selectedCity = e.target.value;
           const boxCity = document.getElementById(`box-city-${id}`);
