@@ -98,7 +98,7 @@
 
     .grid-row {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       gap: 10px;
     }
 
@@ -201,21 +201,6 @@
       width: 100%;
     }
 
-    .yellow-select {
-      border: 1px solid rgba(255, 204, 0, 0.4);
-      background: #0f131d;
-      color: var(--accent-yellow);
-      padding: 4px;
-      font-size: 11px;
-      font-weight: 700;
-      border-radius: 4px;
-      outline: none;
-      width: 100%;
-      text-align: center;
-      cursor: pointer;
-      transition: border-color 0.2s;
-    }
-
     .cyan-select {
       border: 1px solid rgba(0, 229, 255, 0.4);
       background: #0f131d;
@@ -229,17 +214,32 @@
       text-align: center;
       cursor: pointer;
       transition: all 0.2s;
-      display: none;
     }
 
-    .yellow-select:focus {
-      border-color: var(--accent-yellow);
-      box-shadow: 0 0 6px rgba(255, 204, 0, 0.4);
+    .yellow-select {
+      border: 1px solid rgba(255, 204, 0, 0.4);
+      background: #0f131d;
+      color: var(--accent-yellow);
+      padding: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      border-radius: 4px;
+      outline: none;
+      width: 100%;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: none;
     }
 
     .cyan-select:focus {
       border-color: var(--accent-cyan);
       box-shadow: 0 0 6px rgba(0, 229, 255, 0.4);
+    }
+
+    .yellow-select:focus {
+      border-color: var(--accent-yellow);
+      box-shadow: 0 0 6px rgba(255, 204, 0, 0.4);
     }
 
     .input-idx {
@@ -253,7 +253,6 @@
 </head>
 <body>
 
-  <!-- Top Header Bar -->
   <div class="header-bar">
     <div class="brand-title">
       <span class="live-dot"></span>
@@ -263,25 +262,30 @@
 
   <div class="website-container">
     <div class="content-split">
-      <!-- 32 Boxes Grid Container -->
       <div class="grid-container" id="grid-main"></div>
 
-      <!-- 32 Select Dropdowns Container -->
       <div class="input-panel" id="controls-main"></div>
     </div>
   </div>
 
   <script>
-    const TOTAL_CHANNELS = 32;
+    const TOTAL_CHANNELS = 6;
+    const COLUMNS_PER_ROW = 3;
+
+    const liveUOptions = [
+      "-- سەرچاوە هەڵبژێرە --",
+      "LiveU 1", "LiveU 2", "LiveU 3", "LiveU 4", "LiveU 5", "LiveU 6",
+      "AFP", "APIN", "SUL Clean", "SUL PGM", "Anadolu AA",
+      "UP 1", "UP 2", "UP 3", "UP 4",
+      "ESync 1", "ESync 2", "ESync 3", "ESync 4",
+      "XCON 1", "XCON 2",
+      "GUEST 1", "GUEST 2", "GUEST Pro"
+    ];
 
     const kurdistanCities = [
       "-- شار هەڵبژێرە --", "هەولێر", "سلێمانی", "دهۆک", "هەڵەبجە", "ڕانیە", 
       "قەڵادزێ", "کۆیە", "چەمچەماڵ", "کەرکووک", "زاخۆ", "ئاکرێ", "سۆران", 
       "کەلار", "کفری", "پێنجوێن", "دەربەندیخان", "شەقڵاوە", "شێخان", "ئامێدی", "بەردەڕەش"
-    ];
-
-    const liveUOptions = [
-      "-- LiveU هەڵبژێرە --", "LiveU 1", "LiveU 2", "LiveU 3", "LiveU 4", "LiveU 5", "LiveU 6"
     ];
 
     const alarmTimers = {};
@@ -298,13 +302,14 @@
       }, 5000);
     }
 
-    // Generate 32 Channels Dynamically (8 Rows of 4 Boxes)
-    for (let r = 0; r < TOTAL_CHANNELS / 4; r++) {
+    // Generate 6 Channels Dynamically (2 Rows of 3 Boxes)
+    for (let r = 0; r < Math.ceil(TOTAL_CHANNELS / COLUMNS_PER_ROW); r++) {
       const row = document.createElement('div');
       row.className = 'grid-row';
 
-      for (let c = 1; c <= 4; c++) {
-        const id = (r * 4) + c;
+      for (let c = 1; c <= COLUMNS_PER_ROW; c++) {
+        const id = (r * COLUMNS_PER_ROW) + c;
+        if (id > TOTAL_CHANNELS) break;
 
         // Box
         const box = document.createElement('div');
@@ -328,18 +333,7 @@
         const selectsGroup = document.createElement('div');
         selectsGroup.className = 'selects-group';
 
-        // City Select
-        const citySelect = document.createElement('select');
-        citySelect.className = 'yellow-select';
-
-        kurdistanCities.forEach(city => {
-          const option = document.createElement('option');
-          option.value = city.startsWith('--') ? '' : city;
-          option.textContent = city;
-          citySelect.appendChild(option);
-        });
-
-        // LiveU Select
+        // 1. Live Source Select (Shown First)
         const liveuSelect = document.createElement('select');
         liveuSelect.className = 'cyan-select';
 
@@ -350,38 +344,49 @@
           liveuSelect.appendChild(option);
         });
 
-        // Event: City Change
-        citySelect.addEventListener('change', (e) => {
-          const selectedCity = e.target.value;
-          const boxCity = document.getElementById(`box-city-${id}`);
+        // 2. City Select (Hidden initially)
+        const citySelect = document.createElement('select');
+        citySelect.className = 'yellow-select';
+
+        kurdistanCities.forEach(city => {
+          const option = document.createElement('option');
+          option.value = city.startsWith('--') ? '' : city;
+          option.textContent = city;
+          citySelect.appendChild(option);
+        });
+
+        // Event: Live Source Change
+        liveuSelect.addEventListener('change', (e) => {
+          const selectedLiveU = e.target.value;
           const boxLiveu = document.getElementById(`box-liveu-${id}`);
+          const boxCity = document.getElementById(`box-city-${id}`);
           const boxContainer = document.getElementById(`box-container-${id}`);
 
-          if (selectedCity) {
-            boxCity.textContent = selectedCity;
-            liveuSelect.style.display = 'block';
+          if (selectedLiveU) {
+            boxLiveu.textContent = selectedLiveU;
+            citySelect.style.display = 'block';
           } else {
-            boxCity.textContent = '';
             boxLiveu.textContent = '';
-            liveuSelect.value = '';
-            liveuSelect.style.display = 'none';
+            boxCity.textContent = '';
+            citySelect.value = '';
+            citySelect.style.display = 'none';
           }
 
           triggerAlarm(boxContainer);
         });
 
-        // Event: LiveU Change
-        liveuSelect.addEventListener('change', (e) => {
-          const selectedLiveU = e.target.value;
-          const boxLiveu = document.getElementById(`box-liveu-${id}`);
+        // Event: City Change
+        citySelect.addEventListener('change', (e) => {
+          const selectedCity = e.target.value;
+          const boxCity = document.getElementById(`box-city-${id}`);
           const boxContainer = document.getElementById(`box-container-${id}`);
 
-          boxLiveu.textContent = selectedLiveU;
+          boxCity.textContent = selectedCity;
           triggerAlarm(boxContainer);
         });
 
-        selectsGroup.appendChild(citySelect);
         selectsGroup.appendChild(liveuSelect);
+        selectsGroup.appendChild(citySelect);
 
         wrapper.appendChild(idxSpan);
         wrapper.appendChild(selectsGroup);
