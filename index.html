@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nwezhyan</title>
+  <title>Nwezhyan - MCR</title>
   <style>
     :root {
       --bg-main: #07090e;
-      --card-bg: rgba(18, 22, 33, 0.85);
+      --card-bg: #121621; /* Replaced heavy blur background with solid dark color */
       --card-border: #1e2638;
       --accent-red: #ff2a55;
       --accent-cyan: #00e5ff;
@@ -27,9 +27,6 @@
       width: 100%;
       height: 100vh;
       background-color: var(--bg-main);
-      background-image: 
-        radial-gradient(circle at 50% 0%, rgba(255, 42, 85, 0.08) 0%, transparent 50%),
-        radial-gradient(circle at 50% 100%, rgba(0, 229, 255, 0.05) 0%, transparent 50%);
       overflow: hidden;
       color: var(--text-main);
       display: flex;
@@ -40,12 +37,11 @@
     .header-bar {
       width: 100%;
       padding: 14px 24px;
-      background: rgba(15, 18, 28, 0.9);
+      background: #0f121c;
       border-bottom: 1px solid var(--card-border);
       display: flex;
       justify-content: space-between;
       align-items: center;
-      backdrop-filter: blur(10px);
       flex-shrink: 0;
     }
 
@@ -65,11 +61,10 @@
       height: 12px;
       background-color: var(--accent-red);
       border-radius: 50%;
-      box-shadow: 0 0 10px var(--accent-red);
-      animation: blink 1.5s infinite;
+      animation: opacityPulse 1.5s infinite;
     }
 
-    @keyframes blink {
+    @keyframes opacityPulse {
       0%, 100% { opacity: 1; }
       50% { opacity: 0.3; }
     }
@@ -107,7 +102,7 @@
       height: 100%;
     }
 
-    /* FULL HEIGHT BROADCAST BOXES */
+    /* BROADCAST BOXES */
     .green-box {
       position: relative;
       background: var(--card-bg);
@@ -121,9 +116,8 @@
       justify-content: center;
       padding: 24px 12px 12px 12px;
       text-align: center;
-      backdrop-filter: blur(8px);
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: background-color 0.2s ease, border-color 0.2s ease;
+      will-change: background-color, border-color;
     }
 
     .box-number {
@@ -152,25 +146,19 @@
       letter-spacing: 0.5px;
     }
 
-    /* ALARM ANIMATION */
+    /* HIGH-PERFORMANCE ALARM ANIMATION */
     @keyframes broadcastAlarm {
       0% {
-        background-color: rgba(255, 42, 85, 0.85);
+        background-color: rgba(255, 42, 85, 0.9);
         border-color: #ff2a55;
-        box-shadow: 0 0 25px rgba(255, 42, 85, 0.9);
-        transform: scale(1.01);
       }
       50% {
         background-color: rgba(255, 42, 85, 0.25);
         border-color: #ff7591;
-        box-shadow: 0 0 8px rgba(255, 42, 85, 0.3);
-        transform: scale(1);
       }
       100% {
-        background-color: rgba(255, 42, 85, 0.85);
+        background-color: rgba(255, 42, 85, 0.9);
         border-color: #ff2a55;
-        box-shadow: 0 0 25px rgba(255, 42, 85, 0.9);
-        transform: scale(1.01);
       }
     }
 
@@ -193,7 +181,7 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      background: rgba(18, 22, 33, 0.6);
+      background: rgba(18, 22, 33, 0.8);
       padding: 10px;
       border-radius: 10px;
       border: 1px solid rgba(255, 255, 255, 0.05);
@@ -217,7 +205,6 @@
       width: 100%;
       text-align: center;
       cursor: pointer;
-      transition: all 0.2s;
     }
 
     .cyan-select {
@@ -229,16 +216,6 @@
       border: 1px solid rgba(255, 204, 0, 0.4);
       color: var(--accent-yellow);
       display: none;
-    }
-
-    .cyan-select:focus {
-      border-color: var(--accent-cyan);
-      box-shadow: 0 0 8px rgba(0, 229, 255, 0.4);
-    }
-
-    .yellow-select:focus {
-      border-color: var(--accent-yellow);
-      box-shadow: 0 0 8px rgba(255, 204, 0, 0.4);
     }
 
     .input-idx {
@@ -299,14 +276,15 @@
       }, 5000);
     }
 
-    // Explicit grid layout definition matching your layout request in RTL mode
     const layoutMap = [
-      [2, 1], // Row 1: Ext 2 (Right), Ext 1 (Left)
-      [4, 3], // Row 2: Ext 4 (Right), Ext 3 (Left)
-      [6, 5]  // Row 3: Ext 6 (Right), Ext 5 (Left)
+      [2, 1],
+      [4, 3],
+      [6, 5]
     ];
 
-    // Build Grid Boxes according to layout matrix
+    // Document fragment for batched DOM insertion
+    const gridFragment = document.createDocumentFragment();
+
     layoutMap.forEach(rowIds => {
       const row = document.createElement('div');
       row.className = 'grid-row';
@@ -323,10 +301,12 @@
         row.appendChild(box);
       });
 
-      gridMain.appendChild(row);
+      gridFragment.appendChild(row);
     });
+    gridMain.appendChild(gridFragment);
 
-    // Build Control Panel Items (1 to 6)
+    const controlsFragment = document.createDocumentFragment();
+
     for (let id = 1; id <= TOTAL_CHANNELS; id++) {
       const wrapper = document.createElement('div');
       wrapper.className = 'input-wrapper';
@@ -389,8 +369,9 @@
 
       wrapper.appendChild(idxSpan);
       wrapper.appendChild(selectsGroup);
-      controlsMain.appendChild(wrapper);
+      controlsFragment.appendChild(wrapper);
     }
+    controlsMain.appendChild(controlsFragment);
   </script>
 
 </body>
